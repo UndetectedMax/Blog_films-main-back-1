@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Roles</title>
+    <link rel="stylesheet" type="text/css" href="roles.css">
+</head>
+<body>
+<h1>User Roles</h1>
+<ul id="userList">
+    <!-- Здесь будет отображаться список пользователей и их ролей -->
+</ul>
+<h2>Assign Role</h2>
+<label for="selectUser">Select User:</label>
+<select id="selectUser">
+    <!-- Здесь будут варианты выбора пользователей -->
+</select>
+<label for="selectRole">Select Role:</label>
+<select id="selectRole">
+    <!-- Здесь будут варианты выбора ролей, например, "USER" и "ADMIN" -->
+    <option value="USER">USER</option>
+    <option value="ADMIN">ADMIN</option>
+</select>
+<button id="assignRole">Assign Role</button>
+
+<script>
+    async function fetchUserListAndRoles() {
+        try {
+            const userListResponse = await fetch('/users');
+            const userList = await userListResponse.json();
+
+            for (const user of userList) {
+                const roles = user.roles;
+                const roleValue = roles.length > 0 ? roles[0] : "No Role";
+                const userElement = document.createElement('li');
+                userElement.textContent = `${user.username} - ${roleValue}`;
+                userElement.setAttribute('data-userid', user._id);  // Добавляем атрибут с ID пользователя
+                document.getElementById('userList').appendChild(userElement);
+            }
+        } catch (error) {
+            console.error('Ошибка при получении списка пользователей и их ролей:', error);
+        }
+    }
+
+    // Функция для заполнения селекта списком пользователей
+    async function fillUserSelect() {
+        try {
+            const response = await fetch('/users');
+            if (response.ok) {
+                const userList = await response.json();
+                const selectUser = document.getElementById('selectUser');
+                selectUser.innerHTML = '';
+
+                userList.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user._id;
+                    option.textContent = user.username;
+                    selectUser.appendChild(option);
+                });
+            } else {
+                console.error('Ошибка при получении списка пользователей');
+            }
+        } catch (error) {
+            console.error('Ошибка при получении списка пользователей:', error);
+        }
+    }
+    // Обработчик события для кнопки "Assign Role"
+    document.getElementById('assignRole').addEventListener('click', async () => {
+        const selectedUserId = document.getElementById('selectUser').value;
+        const selectedRoleId = document.getElementById('selectRole').value;
+
+        try {
+            const response = await fetch(`/assignRole/${selectedUserId}/${selectedRoleId}`, {
+                method: 'POST',
+            });
+
+            if (response.ok) {
+                // Обновите текстовое поле роли пользователя на странице
+                const roleValueResponse = await fetch(`/getRoleValue/${selectedRoleId}`);
+                if (roleValueResponse.ok) {
+                    const roleValue = (await roleValueResponse.json()).value;
+                    const userIdAttribute = `data-userid="${selectedUserId}"`;
+                    document.querySelector(`#userList li[${userIdAttribute}]`).textContent = `${document.getElementById('selectUser').selectedOptions[0].text} - ${roleValue}`;
+
+                    // Перезагружаем страницу
+                    location.reload();
+                }
+            } else {
+                console.error('Ошибка при изменении роли пользователя');
+            }
+        } catch (error) {
+            console.error('Ошибка при изменении роли пользователя:', error);
+        }
+    });
+
+
+    fetchUserListAndRoles()
+    fillUserSelect()
+</script>
+</body>
+</html>
