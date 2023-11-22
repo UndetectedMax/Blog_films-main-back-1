@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="66ee24b6-22a4-481a-8d6e-146f6f960963" name="ai214-miroshnichenko" url="http://ai-214-miroshnichenko">
+        <fileTransfer accessType="SFTP" sshConfigId="0ea96311-121f-4c12-844a-12751115bf36" sshConfig="ai214-miroshnichenko">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
