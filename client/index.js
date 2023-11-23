@@ -25,10 +25,10 @@ let User
 let modal
 let modalAuth
 let authToken = ''
-const USERS_URL = '/api/auth/users'
-const BASE_URL = '/api/post'
-const REG_URL = '/api/auth/registration'
-const AUTH_URL = '/api/auth/login'
+const USERS_URL = 'https://blogfilms-main-back-1-production.up.railway.app/api/auth/users'
+const BASE_URL = 'https://blogfilms-main-back-1-production.up.railway.app/api/post'
+const REG_URL = 'https://blogfilms-main-back-1-production.up.railway.app/api/auth/registration'
+const AUTH_URL = 'https://blogfilms-main-back-1-production.up.railway.app/api/auth/login'
 const openPopUpLogIn = document.getElementById('login');
 const closePopUpLogIn = document.getElementById('pop_up_LogIn_close');
 const popUpLogIn = document.getElementById('pop_up_LogIn');
